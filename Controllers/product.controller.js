@@ -1,4 +1,4 @@
-import Products from "../Schema/product.schema.js";
+import Products from "../Models/product.schema.js";
 import { productData } from "../seeder/seedData.js";
 
 export async function addSeeder(req, res) {

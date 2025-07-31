@@ -1,6 +1,19 @@
 import mongoose from "mongoose";
-import Cart from "../Schema/cart.schema.js";
-import Products from "../Schema/product.schema.js";
+import Cart from "../Models/cart.schema.js";
+import Products from "../Models/product.schema.js";
+
+
+export async function viewCart(req,res){
+  try {
+    const allCartItmes = await Cart.find({})
+    if(!allCartItmes || allCartItmes.length === 0) {
+      return res.status(400).json({ message: "No Items in The Cart" })
+    }
+    return res.status(200).json(allCartItmes)
+  } catch (error) {
+    return res.status(404).json({ message: "Items Not Found" });
+  }
+}
 
 export async function addToCart(req, res) {
   try {
@@ -38,4 +51,18 @@ export async function updateCart(req, res) {
     } catch (error) {
         return res.status(400).json({ message: "Error Updating Item Quantity", error });
     }
+}
+
+export async function deleteCart(req, res) {
+  try {
+    const id = req.params.id;
+    const cartItem = await Cart.findByIdAndDelete(id)
+    if(!cartItem){
+      return res.status(400).json({ message: "No Items Matched To Delete The Item" })
+    }
+
+    return res.status(200).json(cartItem); 
+  } catch (error) {
+     return res.status(400).json({ message: "Error Deleteing Item", error });
+  }
 }

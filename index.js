@@ -2,7 +2,9 @@ import express from "express"
 import mongoose, { mongo } from "mongoose";
 import { productData } from "./seeder/seedData.js";
 import {addSeeder, getAllProducts, getProductById} from "./Controllers/product.controller.js";
-import { addToCart, updateCart } from "./Controllers/cart.controller.js";
+import { addToCart, updateCart, deleteCart, viewCart } from "./Controllers/cart.controller.js";
+import { registerUser, loginUser } from "./Controllers/user.controller.js";
+import aunthenticateUSer from "./Middlewares/authenticateUser.js";
 
 const app = express();
 const PORT = 5051
@@ -27,14 +29,19 @@ app.get("/products", getAllProducts)
 
 app.get("/products/:id", getProductById)
 
-app.post("/cart", addToCart)
+app.get("/cart", aunthenticateUSer, viewCart)
 
-app.put("/cart/:id", updateCart)
+app.post("/cart/add", aunthenticateUSer, addToCart)
 
-app.delete("/cart/:id", (req, res) => {
-    res.status(200).json({msg: "Item Deleted"})
-})
+app.put("/cart/:id", aunthenticateUSer, updateCart)
+
+app.delete("/cart/:id", aunthenticateUSer, deleteCart)
+
+app.post("/register", registerUser)
+
+app.post("/login", loginUser)
 
 app.listen(PORT, () => {
     console.log(`App is listening to PORT: ${PORT}`)
 })
+

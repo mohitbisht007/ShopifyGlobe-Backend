@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+
+//this is my productSchema where all the fields are required to add a new prodcut at DB
 const productSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -19,5 +21,7 @@ const productSchema = new mongoose.Schema({
   },
 });
 
+
+//my product model
 const Products = mongoose.model("Products", productSchema);
 export default Products;
